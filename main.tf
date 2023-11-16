@@ -11,7 +11,7 @@ provider "digitalocean" {
   token = var.do_token
 }
 
-resource "digitalocean_kubernetes_cluster" "k8s_iniciativa" {
+resource "digitalocean_kubernetes_cluster" "k8s_quick-iac" {
   name   = var.k8s_name
   region = var.region
   version = "1.22.8-do.1"
@@ -25,7 +25,7 @@ resource "digitalocean_kubernetes_cluster" "k8s_iniciativa" {
 }
 
 resource "digitalocean_kubernetes_node_pool" "node_premium" {
-  cluster_id = digitalocean_kubernetes_cluster.k8s_iniciativa.id
+  cluster_id = digitalocean_kubernetes_cluster.k8s_quick-iac.id
   name       = "premium"
   size       = "s-4vcpu-8gb"
   node_count = 1
@@ -36,10 +36,10 @@ variable "k8s_name" {}
 variable "region" {}
 
 output "kube_endpoint" {
-    value = digitalocean_kubernetes_cluster.k8s_iniciativa.endpoint
+    value = digitalocean_kubernetes_cluster.k8s_quick-iac.endpoint
 }
 
 resource "local_file" "kube_config" {
-    content  = digitalocean_kubernetes_cluster.k8s_iniciativa.kube_config.0.raw_config
+    content  = digitalocean_kubernetes_cluster.k8s_quick-iac.kube_config.0.raw_config
     filename = "kube_config.yaml"
 }
